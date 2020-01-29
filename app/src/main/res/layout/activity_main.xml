@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,22 +13,27 @@
         tools:context=".MainActivity"
         tools:showIn="@layout/activity_main">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/main_toolbar" />
+
         <ImageView
             android:id="@+id/loginLogo"
             android:layout_width="123dp"
             android:layout_height="123dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/logo" />
 
         <ImageView
             android:id="@+id/loginLogoText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/loginLogo"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/name_image" />
 
         <EditText
@@ -115,6 +106,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:clickable="true"
+            android:onClick="openCreateProfileActivity"
             android:text="Tap here to create an account"
             android:textColor="@color/colorPrimary"
             android:textStyle="italic"
