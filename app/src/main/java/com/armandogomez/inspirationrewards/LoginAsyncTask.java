@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -15,45 +14,35 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class PostProfileAsyncTask extends AsyncTask<String, Void, String> {
-	private static final String TAG = "PostProfileAsyncTask";
+public class LoginAsyncTask extends AsyncTask<String, Void, String> {
+	private static final String TAG = "LoginAsyncTask";
 	private static final String API_URL = "http://inspirationrewardsapi-env.6mmagpm2pv.us-east-2.elasticbeanstalk.com";
 	private static final String STUDENT_ID = "1927073";
 	@SuppressLint("StaticFieldLeak")
-	private CreateProfileActivity createProfileActivity;
+	private MainActivity mainActivity;
 	private int responseCode;
 
-	PostProfileAsyncTask(CreateProfileActivity createProfileActivity) {
-		this.createProfileActivity = createProfileActivity;
+	LoginAsyncTask(MainActivity mainActivity) {
+		this.mainActivity = mainActivity;
 	}
 
 	@Override
 	protected void onPostExecute(String s) {
 		if(responseCode == 200) {
-			createProfileActivity.createProfileAsyncSuccess(s);
+			mainActivity.loginAsyncResultSuccess(s);
 		} else {
-			createProfileActivity.createProfileAsyncError(s);
+			mainActivity.loginAsyncResultError(s);
 		}
 	}
 
 	@Override
 	protected String doInBackground(String... strings) {
-		JSONObject profileJSON = new JSONObject();
+		JSONObject loginJSON = new JSONObject();
 		try {
-			profileJSON.put("studentId", STUDENT_ID);
-			profileJSON.put("username", strings[0]);
-			profileJSON.put("password", strings[1]);
-			profileJSON.put("firstName", strings[2]);
-			profileJSON.put("lastName", strings[3]);
-			profileJSON.put("pointsToAward", 1000);
-			profileJSON.put("department", strings[4]);
-			profileJSON.put("story", strings[5]);
-			profileJSON.put("position", strings[6]);
-			profileJSON.put("admin", String.valueOf(strings[7]));
-			profileJSON.put("location", strings[8]);
-			profileJSON.put("imageBytes", strings[9]);
-			profileJSON.put("rewardRecords", new JSONArray());
-			Log.i(TAG, profileJSON.toString());
+			loginJSON.put("studentId", STUDENT_ID);
+			loginJSON.put("username", strings[0]);
+			loginJSON.put("password", strings[1]);
+			Log.i(TAG, loginJSON.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -64,7 +53,7 @@ public class PostProfileAsyncTask extends AsyncTask<String, Void, String> {
 
 		try {
 			Uri baseUri = Uri.parse(API_URL);
-			String urlString = baseUri.toString() + "/profiles";
+			String urlString = baseUri.toString() + "/login";
 
 			Uri.Builder buildURL = Uri.parse(urlString).buildUpon();
 			String urlToUse = buildURL.build().toString();
@@ -77,7 +66,7 @@ public class PostProfileAsyncTask extends AsyncTask<String, Void, String> {
 			connection.connect();
 
 			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-			out.write(profileJSON.toString());
+			out.write(loginJSON.toString());
 			out.close();
 
 			responseCode = connection.getResponseCode();
@@ -104,7 +93,6 @@ public class PostProfileAsyncTask extends AsyncTask<String, Void, String> {
 				Log.i(TAG, "Result from JSON: " + result.toString());
 				return result.toString();
 			}
-
 
 		} catch (Exception e) {
 			e.printStackTrace();

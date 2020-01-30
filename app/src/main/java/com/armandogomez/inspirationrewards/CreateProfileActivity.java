@@ -9,6 +9,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -50,6 +52,8 @@ public class CreateProfileActivity extends AppCompatActivity {
 
 	String location;
 
+	EditText storyText;
+	TextView storyCharCount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,24 @@ public class CreateProfileActivity extends AppCompatActivity {
 		});
 
 		profilePic = findViewById(R.id.createProfilePicture);
+
+		storyText = findViewById(R.id.createStory);
+		storyCharCount = findViewById(R.id.createStoryCharCount);
+		storyText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				storyCharCount.setText("(" + s.toString().length() + " of 360)");
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+
+			}
+		});
 	}
 
 	@Override
@@ -211,26 +233,24 @@ public class CreateProfileActivity extends AppCompatActivity {
 		profilePic.setImageDrawable(null);
 	}
 
-	public void showResults(String s) {
-		if(s.equals("SUCCESS")) {
-			Toast toast = Toast.makeText(getApplicationContext(), "User Create Successful", Toast.LENGTH_LONG);
-			View toastView = toast.getView();
-			toastView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-			TextView tv = toast.getView().findViewById(android.R.id.message);
-			tv.setPadding(50, 25, 50, 25);
-			tv.setTextColor(Color.WHITE);
-			toast.show();
-			onBackPressed();
-		} else {
-			JSONObject jsonObject;
-			String message = "";
-			try{
-				jsonObject = new JSONObject(s);
-				message = jsonObject.getString("message");
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+	public void createProfileAsyncSuccess(String s) {
+		Toast toast = Toast.makeText(getApplicationContext(), "User Create Successful", Toast.LENGTH_LONG);
+		View toastView = toast.getView();
+		toastView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+		TextView tv = toast.getView().findViewById(android.R.id.message);
+		tv.setPadding(50, 25, 50, 25);
+		tv.setTextColor(Color.WHITE);
+		toast.show();
+		onBackPressed();
+	}
+
+	public void createProfileAsyncError(String result) {
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = new JSONObject(result);
+			result = jsonObject.getString("errordetails");
+			jsonObject = new JSONObject(result);
+			String message = jsonObject.getString("message");
 			Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
 			View toastView = toast.getView();
 			toastView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -238,6 +258,8 @@ public class CreateProfileActivity extends AppCompatActivity {
 			tv.setPadding(50, 25, 50, 25);
 			tv.setTextColor(Color.WHITE);
 			toast.show();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
