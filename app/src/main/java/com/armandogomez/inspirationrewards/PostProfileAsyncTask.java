@@ -47,8 +47,8 @@ public class PostProfileAsyncTask extends AsyncTask<String, Void, String> {
 			profileJSON.put("lastName", strings[3]);
 			profileJSON.put("pointsToAward", 1000);
 			profileJSON.put("department", strings[4]);
-			profileJSON.put("story", strings[5]);
-			profileJSON.put("position", strings[6]);
+			profileJSON.put("position", strings[5]);
+			profileJSON.put("story", strings[6]);
 			profileJSON.put("admin", String.valueOf(strings[7]));
 			profileJSON.put("location", strings[8]);
 			profileJSON.put("imageBytes", strings[9]);

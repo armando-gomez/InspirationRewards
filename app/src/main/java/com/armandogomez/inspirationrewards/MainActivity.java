@@ -23,13 +23,16 @@ import androidx.core.content.ContextCompat;
 
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
 	public void openCreateProfileActivity(View v) {
 		Intent intent = new Intent(this, CreateProfileActivity.class);
-		String location = address.getLocality() + address.getAdminArea();
+		String location = address.getLocality() + ", " + address.getAdminArea();
 		intent.putExtra("LOCATION", location);
 		startActivity(intent);
 	}
@@ -139,31 +142,18 @@ public class MainActivity extends AppCompatActivity {
 		String username = ((EditText) findViewById(R.id.loginUserInput)).getText().toString();
 		String password = ((EditText) findViewById(R.id.loginPasswordInput)).getText().toString();
 		String[] postData = {username, password};
+		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
 		new LoginAsyncTask(this).execute(postData);
 	}
 
 	public void loginAsyncResultSuccess(String result) {
 		progressOverlay.setVisibility(View.INVISIBLE);
-		JSONObject jsonObject = null;
 		try {
-			jsonObject = new JSONObject(result);
-			String firstName = jsonObject.getString("firstName");
-			String lastName = jsonObject.getString("lastName");
-			String username = jsonObject.getString("username");
-			String password = jsonObject.getString("password");
-			String department = jsonObject.getString("department");
-			String position = jsonObject.getString("position");
-			String story = jsonObject.getString("story");
-			int points = jsonObject.getInt("pointsToAward");
-			boolean admin = jsonObject.getBoolean("admin");
-			String imageBytes = jsonObject.getString("imageBytes");
-			String location = jsonObject.getString("location");
-			JSONArray rewards = jsonObject.getJSONArray("rewards");
-
-			Profile p = new Profile(firstName, lastName, username, password, department, position, story, points, admin, imageBytes, location, rewards);
-
+			String filename = saveProfileJSON(result);
 			Intent intent = new Intent(this, ProfileActivity.class);
-			intent.putExtra("PROFILE_OBJECT", p);
+			intent.putExtra("JSON_FILE_NAME", filename);
 			startActivity(intent);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -188,5 +178,16 @@ public class MainActivity extends AppCompatActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String saveProfileJSON(String s) throws IOException, JSONException {
+		FileOutputStream fos = getApplicationContext()
+				.openFileOutput("profile.json", Context.MODE_PRIVATE);
+
+		JSONObject jsonObject = new JSONObject(s);
+		String jsonText = jsonObject.toString();
+		fos.write(jsonText.getBytes());
+		fos.close();
+		return "profile.json";
 	}
 }

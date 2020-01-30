@@ -1,17 +1,18 @@
 package com.armandogomez.inspirationrewards;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.Serializable;
-
-public class Profile implements Serializable {
+public class Profile {
 	private String firstName;
 	private String lastName;
 	private String department;
 	private String story;
 	private String position;
 	private boolean admin;
-	private int points;
+	private int pointsToGive;
+	private int pointsReceived = 0;
 	private String username;
 	private String password;
 	private String imageBytes;
@@ -24,16 +25,32 @@ public class Profile implements Serializable {
 		this.department = department;
 		this.story = story;
 		this.position = position;
-		this.points = points;
+		this.pointsToGive = points;
 		this.admin = admin;
 		this.username = username;
 		this.password = password;
 		this.imageBytes = imageBytes;
 		this.location = location;
 		this.rewards = rewards;
+
+		calculateTotalPointsReceived();
 	}
 
-	Profile(){}
+	private void calculateTotalPointsReceived() {
+		for(int i=0; i < rewards.length(); i++) {
+			try {
+				JSONObject reward = rewards.getJSONObject(i);
+				pointsReceived += reward.getInt("value");
+			} catch (JSONException e) {
+				pointsReceived = 0;
+				break;
+			}
+		}
+	}
+
+	public String getFullName() {
+		return getLastName() + ", " + getFirstName();
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -75,11 +92,31 @@ public class Profile implements Serializable {
 		this.story = story;
 	}
 
-	public int getPoints() {
-		return points;
+	public int getPointsToGive() {
+		return pointsToGive;
 	}
 
 	public void updatePoints(int points) {
-		this.points = this.points + points;
+		this.pointsToGive = this.pointsToGive + points;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public String getImageBytes() {
+		return imageBytes;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public int getPointsReceived() {
+		return pointsReceived;
 	}
 }
