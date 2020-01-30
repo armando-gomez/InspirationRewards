@@ -119,4 +119,12 @@ public class Profile {
 	public int getPointsReceived() {
 		return pointsReceived;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public JSONArray getRewards() {
+		return rewards;
+	}
 }

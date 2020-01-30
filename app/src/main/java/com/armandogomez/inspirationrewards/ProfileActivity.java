@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 	private List<RewardHistory> rewardHistoryList = new ArrayList<>();
 	private RecyclerView recyclerView;
 	private RewardHistoryAdapter rewardHistoryAdapter;
+	private String filename;
 
 	private TextView profileFullName;
 	private TextView profileUsername;
@@ -64,13 +66,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		rewardHistoryCount = (TextView) findViewById(R.id.profileRewardHistoryCount);
 		profilePic = (ImageView) findViewById(R.id.profilePic);
 
-		String filename = getIntent().getStringExtra("JSON_FILE_NAME");
+		filename = getIntent().getStringExtra("JSON_FILE_NAME");
 		loadJSON(filename);
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setTitle("Your Profile");
 		toolbar.setNavigationIcon(R.drawable.icon);
+	}
+
+	@Override
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if(requestCode == 200 && resultCode == Activity.RESULT_OK) {
+			loadJSON("profile.json");
+		}
 	}
 
 	@Override
@@ -100,7 +111,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 	private void editProfile(){
 		Intent intent = new Intent(this, EditProfileActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent, 200);
 	}
 
 	private void openLeaderboard(){}
