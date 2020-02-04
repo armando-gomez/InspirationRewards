@@ -80,7 +80,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if(requestCode == 200 && resultCode == Activity.RESULT_OK) {
-			loadJSON("profile.json");
+			finish();
+			startActivity(getIntent());
 		}
 	}
 
@@ -114,7 +115,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		startActivityForResult(intent, 200);
 	}
 
-	private void openLeaderboard(){}
+	private void openLeaderboard(){
+		Intent intent = new Intent(this, LeaderboardActivity.class);
+		intent.putExtra("USERNAME", profile.getUsername());
+		intent.putExtra("PASSWORD", profile.getPassword());
+		startActivity(intent);
+	}
 
 	private void loadProfile() {
 		profileFullName.setText(profile.getFullName());
@@ -152,8 +158,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 			boolean admin = jsonObject.getBoolean("admin");
 			String imageBytes = jsonObject.getString("imageBytes");
 			String location = jsonObject.getString("location");
-			JSONArray rewards = jsonObject.getJSONArray("rewards");
-
+			JSONArray rewards;
+			try {
+				rewards = jsonObject.getJSONArray("rewards");
+			} catch (Exception e) {
+				rewards = jsonObject.getJSONArray("rewardRecords");
+			}
 			profile = new Profile(firstName, lastName, username, password, department, position, story, points, admin, imageBytes, location, rewards);
 
 			loadProfile();
