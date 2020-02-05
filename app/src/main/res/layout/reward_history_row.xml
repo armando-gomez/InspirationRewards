@@ -30,7 +30,7 @@
         android:id="@+id/rewardName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="16dp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/rewardDate"
         app:layout_constraintStart_toEndOf="@+id/rewardDate"

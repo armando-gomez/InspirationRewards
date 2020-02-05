@@ -36,7 +36,7 @@ public class LeaderboardRecordAdapter extends RecyclerView.Adapter<LeaderboardRe
 		String imageBytes = profile.getImageBytes();
 		setProfilePic(imageBytes, holder);
 		holder.recordFullName.setText(profile.getFullName());
-		holder.recordPoints.setText(profile.getPointsReceived());
+		holder.recordPoints.setText(Integer.toString(profile.getPointsReceived()));
 		String departmentPosition = profile.getPosition() + ", " + profile.getDepartment();
 		holder.recordDepartmentPosition.setText(departmentPosition);
 	}

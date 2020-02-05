@@ -1,11 +1,9 @@
 package com.armandogomez.inspirationrewards;
 
-import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -15,55 +13,66 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class PostProfileAsyncTask extends AsyncTask<String, Void, String> {
-	private static final String TAG = "PostProfileAsyncTask";
+public class RewardAsyncTask extends AsyncTask<String, Void, String> {
+	private static final String TAG = "RewardAsyncTask";
 	private static final String API_URL = "http://inspirationrewardsapi-env.6mmagpm2pv.us-east-2.elasticbeanstalk.com";
 	private static final String STUDENT_ID = "1927073";
-	@SuppressLint("StaticFieldLeak")
-	private CreateProfileActivity createProfileActivity;
+
+	private AwardProfileActivity awardProfileActivity;
 	private int responseCode;
 
-	PostProfileAsyncTask(CreateProfileActivity createProfileActivity) {
-		this.createProfileActivity = createProfileActivity;
+	RewardAsyncTask(AwardProfileActivity awardProfileActivity) {
+		this.awardProfileActivity = awardProfileActivity;
 	}
 
 	@Override
 	protected void onPostExecute(String s) {
 		if(responseCode == 200) {
-			createProfileActivity.createProfileAsyncSuccess(s);
+			awardProfileActivity.awardProfileAsyncSuccess(s);
 		} else {
-			createProfileActivity.createProfileAsyncError(s);
+			awardProfileActivity.awardProfileAsyncError(s);
 		}
 	}
 
 	@Override
 	protected String doInBackground(String... strings) {
-		JSONObject profileJSON = new JSONObject();
+		JSONObject targetObject = new JSONObject();
 		try {
-			profileJSON.put("studentId", STUDENT_ID);
-			profileJSON.put("username", strings[0]);
-			profileJSON.put("password", strings[1]);
-			profileJSON.put("firstName", strings[2]);
-			profileJSON.put("lastName", strings[3]);
-			profileJSON.put("pointsToAward", 1000);
-			profileJSON.put("department", strings[4]);
-			profileJSON.put("position", strings[5]);
-			profileJSON.put("story", strings[6]);
-			profileJSON.put("admin", String.valueOf(strings[7]));
-			profileJSON.put("location", strings[8]);
-			profileJSON.put("imageBytes", strings[9]);
-			Log.i(TAG, profileJSON.toString());
+			targetObject.put("studentId", STUDENT_ID);
+			targetObject.put("username", strings[0]);
+			targetObject.put("name", strings[1]);
+			targetObject.put("date", strings[2]);
+			targetObject.put("notes", strings[3]);
+			targetObject.put("value", String.valueOf(strings[4]));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 
+		JSONObject sourceObject = new JSONObject();
+		try {
+			sourceObject.put("studentId", STUDENT_ID);
+			sourceObject.put("username", strings[5]);
+			sourceObject.put("password", strings[6]);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		HttpURLConnection connection = null;
 		BufferedReader reader = null;
 
+		JSONObject dataJSON = new JSONObject();
+		try {
+			dataJSON.put("target", targetObject);
+			dataJSON.put("source", sourceObject);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
 		try {
 			Uri baseUri = Uri.parse(API_URL);
-			String urlString = baseUri.toString() + "/profiles";
+			String urlString = baseUri.toString() + "/rewards";
 
 			Uri.Builder buildURL = Uri.parse(urlString).buildUpon();
 			String urlToUse = buildURL.build().toString();
@@ -76,7 +85,7 @@ public class PostProfileAsyncTask extends AsyncTask<String, Void, String> {
 			connection.connect();
 
 			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-			out.write(profileJSON.toString());
+			out.write(dataJSON.toString());
 			out.close();
 
 			responseCode = connection.getResponseCode();

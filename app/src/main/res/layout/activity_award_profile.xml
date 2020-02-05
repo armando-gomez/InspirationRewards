@@ -6,4 +6,183 @@
     android:layout_height="match_parent"
     tools:context=".AwardProfileActivity">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/main_toolbar" />
+
+    <TextView
+        android:id="@+id/awardFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:text="Smith, John" />
+
+    <ImageView
+        android:id="@+id/awardProfilePic"
+        android:layout_width="153dp"
+        android:layout_height="237dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/awardFullName"
+        app:srcCompat="@drawable/default_photo" />
+
+    <TextView
+        android:id="@+id/awardPointsStatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Points Awarded:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/awardProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/awardFullName" />
+
+    <TextView
+        android:id="@+id/awardPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/awardProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/awardPointsStatic"
+        tools:text="500" />
+
+    <TextView
+        android:id="@+id/awardDepartmentStatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Department:"
+        app:layout_constraintStart_toEndOf="@+id/awardProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/awardPoints" />
+
+    <TextView
+        android:id="@+id/awardDepartment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/awardProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/awardDepartmentStatic"
+        tools:text="Marketing" />
+
+    <TextView
+        android:id="@+id/awardPositionStatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Position:"
+        app:layout_constraintStart_toEndOf="@+id/awardProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/awardDepartment" />
+
+    <TextView
+        android:id="@+id/awardPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/awardProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/awardPositionStatic"
+        tools:text="Director" />
+
+    <TextView
+        android:id="@+id/awardStoryStatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Your Story:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/awardProfilePic" />
+
+    <TextView
+        android:id="@+id/awardStory"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/awardStoryStatic"
+        tools:text="Lorem Ipsum" />
+
+    <TextView
+        android:id="@+id/awardPointsEditStatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Reward points to send:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/awardStory" />
+
+    <EditText
+        android:id="@+id/awardPointEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="133dp"
+        android:background="@color/colorInput"
+        android:ems="10"
+        android:hint="0"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/awardPointsEditStatic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/awardPointsEditStatic" />
+
+    <TextView
+        android:id="@+id/awardCommentStatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Comment:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/awardPointsEditStatic" />
+
+    <TextView
+        android:id="@+id/awardCommentCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/awardCommentStatic"
+        app:layout_constraintStart_toEndOf="@+id/awardCommentStatic"
+        tools:text="(0 of 80)" />
+
+    <EditText
+        android:id="@+id/awardEditComment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorInput"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Comment Here"
+        android:inputType="textMultiLine"
+        android:maxLength="80"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/awardCommentStatic" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

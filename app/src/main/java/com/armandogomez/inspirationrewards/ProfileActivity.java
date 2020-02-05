@@ -2,6 +2,7 @@ package com.armandogomez.inspirationrewards;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
@@ -23,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -53,10 +55,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 		recyclerView = findViewById(R.id.profileRecycler);
 		rewardHistoryAdapter = new RewardHistoryAdapter(rewardHistoryList, this);
+		recyclerView.setAdapter(rewardHistoryAdapter);
+		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 		profileFullName = (TextView) findViewById(R.id.profileFullName);
 		profileUsername = (TextView) findViewById(R.id.profileUsername);
-		profileLocation = (TextView) findViewById(R.id.profileLocation);
 		profileLocation = (TextView) findViewById(R.id.profileLocation);
 		profilePoints = (TextView) findViewById(R.id.profilePoints);
 		profileDepartment = (TextView) findViewById(R.id.profileDepartment);
@@ -73,13 +76,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setTitle("Your Profile");
 		toolbar.setNavigationIcon(R.drawable.icon);
+
 	}
 
 	@Override
 	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if(requestCode == 200 && resultCode == Activity.RESULT_OK) {
+		if((requestCode == 200 || requestCode == 400)&& resultCode == Activity.RESULT_OK) {
 			finish();
 			startActivity(getIntent());
 		}
@@ -119,7 +123,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		Intent intent = new Intent(this, LeaderboardActivity.class);
 		intent.putExtra("USERNAME", profile.getUsername());
 		intent.putExtra("PASSWORD", profile.getPassword());
-		startActivity(intent);
+		intent.putExtra("FULLNAME", profile.getFirstName() + " " + profile.getLastName());
+		startActivityForResult(intent, 400);
 	}
 
 	private void loadProfile() {
@@ -134,6 +139,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		rewardHistoryCount.setText("Reward History (" + rewardHistoryList.size() + ")");
 
 		textToImage(profile.getImageBytes());
+		loadRewardHistory();
+	}
+
+	private void loadRewardHistory() {
+		if(!(this.rewardHistoryList.isEmpty())) {
+			this.rewardHistoryList.clear();
+		}
+		JSONArray rewardJSON = profile.getRewards();
+		for(int i=0; i < rewardJSON.length(); i++) {
+			try {
+				JSONObject reward = rewardJSON.getJSONObject(i);
+				String date = reward.getString("date");
+				String name = reward.getString("name");
+				String notes = reward.getString("notes");
+				int value = reward.getInt("value");
+				RewardHistory rewardHistory = new RewardHistory(date, name, value, notes);
+				this.rewardHistoryList.add(rewardHistory);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		updateAdapter();
+	}
+
+	private void updateAdapter() {
+		rewardHistoryAdapter.notifyDataSetChanged();
 	}
 
 	private void textToImage(String imageString) {

@@ -15,5 +15,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:indeterminateTint="@color/colorPrimary"
+        android:translationZ="5dp"
         android:visibility="visible" />
 </FrameLayout>

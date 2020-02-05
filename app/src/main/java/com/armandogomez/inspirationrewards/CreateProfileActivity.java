@@ -47,13 +47,13 @@ public class CreateProfileActivity extends AppCompatActivity {
 	private int REQUEST_IMAGE_CAPTURE = 2;
 	private File currentImageFile;
 
-	Menu menu;
-	ImageView profilePic;
+	private Menu menu;
+	private ImageView profilePic;
 
-	String location;
+	private String location;
 
-	EditText storyText;
-	TextView storyCharCount;
+	private EditText storyText;
+	private TextView storyCharCount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

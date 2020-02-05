@@ -70,34 +70,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/loginUserInput" />
 
-        <Button
-            android:id="@+id/loginButton"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:onClick="onLoginClick"
-            android:text="LOGIN"
-            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginPasswordInput" />
+            app:layout_constraintTop_toBottomOf="@+id/loginPasswordInput">
+
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="onLoginClick"
+                android:padding="10dp"
+                android:text="LOGIN"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <CheckBox
             android:id="@+id/loginRememberLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:buttonTint="@color/colorPrimary"
             android:text="Remember my credentials"
             android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         <TextView
             android:id="@+id/loginCreateAccount"
@@ -116,7 +127,12 @@
             app:layout_constraintTop_toBottomOf="@+id/loginRememberLogin" />
 
         <include
-            layout="@layout/include_progress_bar" />
+            layout="@layout/include_progress_bar"
+            android:translationZ="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

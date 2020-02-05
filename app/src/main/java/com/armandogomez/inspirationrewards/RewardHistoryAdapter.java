@@ -33,8 +33,8 @@ public class RewardHistoryAdapter extends RecyclerView.Adapter<RewardHistoryView
 
 		holder.rewardDate.setText(rewardHistory.getDate());
 		holder.rewardName.setText(rewardHistory.getName());
-		holder.rewardAmount.setText(rewardHistory.getAmount());
-		holder.rewardMessage.setText(rewardHistory.getMessage());
+		holder.rewardAmount.setText(Integer.toString(rewardHistory.getValue()));
+		holder.rewardMessage.setText(rewardHistory.getNotes());
 	}
 
 	@Override

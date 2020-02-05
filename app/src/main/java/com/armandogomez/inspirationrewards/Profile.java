@@ -37,13 +37,17 @@ public class Profile {
 	}
 
 	private void calculateTotalPointsReceived() {
-		for(int i=0; i < rewards.length(); i++) {
-			try {
-				JSONObject reward = rewards.getJSONObject(i);
-				pointsReceived += reward.getInt("value");
-			} catch (JSONException e) {
-				pointsReceived = 0;
-				break;
+		if(this.rewards == null) {
+			pointsReceived = 0;
+		} else {
+			for(int i=0; i < rewards.length(); i++) {
+				try {
+					JSONObject reward = rewards.getJSONObject(i);
+					pointsReceived += reward.getInt("value");
+				} catch (JSONException e) {
+					pointsReceived = 0;
+					break;
+				}
 			}
 		}
 	}
