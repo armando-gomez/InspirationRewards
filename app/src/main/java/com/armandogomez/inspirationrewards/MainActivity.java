@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
@@ -24,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,15 +45,32 @@ public class MainActivity extends AppCompatActivity {
 
 	private LocationManager locationManager;
 	private Criteria criteria;
+	private SharedPreferences sharedPreferences;
 
 	private Address address;
 	private boolean networkStatusOnline = false;
 	View progressOverlay;
 
+	private EditText loginUserInput;
+	private EditText loginPasswordInput;
+	private CheckBox loginCheckBox;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		loginUserInput = findViewById(R.id.loginUserInput);
+		loginPasswordInput = findViewById(R.id.loginPasswordInput);
+		loginCheckBox = findViewById(R.id.loginRememberLogin);
+
+		sharedPreferences = getApplicationContext().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+
+		if(sharedPreferences.contains("USERNAME") && sharedPreferences.contains("PASSWORD") && sharedPreferences.contains("REMEMBER")) {
+			loginUserInput.setText(sharedPreferences.getString("USERNAME", ""));
+			loginPasswordInput.setText(sharedPreferences.getString("PASSWORD", ""));
+			loginCheckBox.setChecked(true);
+		}
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		criteria = new Criteria();
@@ -144,7 +163,13 @@ public class MainActivity extends AppCompatActivity {
 		String[] postData = {username, password};
 		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
+		if(loginCheckBox.isChecked()) {
+			SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+			prefsEditor.putString("USERNAME", username);
+			prefsEditor.putString("PASSWORD", password);
+			prefsEditor.putBoolean("REMEMBER", true);
+			prefsEditor.apply();
+		}
 		new LoginAsyncTask(this).execute(postData);
 	}
 
